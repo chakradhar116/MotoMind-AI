@@ -1,6 +1,7 @@
 
 import React from 'react';
 import { Bike } from '../types';
+import { RadarChart } from './RadarChart';
 
 interface ComparisonModalProps {
   bikes: Bike[];
@@ -19,7 +20,7 @@ export const ComparisonModal: React.FC<ComparisonModalProps> = ({ bikes, onClose
         
         <div className="p-6 border-b border-slate-800 flex justify-between items-center bg-slate-900/50 backdrop-blur-md z-10">
           <h2 className="text-2xl font-bold text-white font-['Exo_2'] flex items-center gap-2">
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
             </svg>
             {labels.specShowdown}
@@ -32,10 +33,16 @@ export const ComparisonModal: React.FC<ComparisonModalProps> = ({ bikes, onClose
         </div>
 
         <div className="overflow-auto custom-scrollbar flex-1 p-6 bg-slate-950/50">
+          
+          {/* Radar Chart Section */}
+          <div className="mb-8 flex justify-center bg-slate-900/30 rounded-2xl border border-white/5 p-4">
+             <RadarChart bikes={bikes} />
+          </div>
+
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 min-w-[300px]">
             {bikes.map((bike, index) => (
-              <div key={bike.id} className="bg-slate-900 rounded-xl border border-slate-800 overflow-hidden flex flex-col relative hover:border-blue-500/30 transition-colors shadow-xl">
-                <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-blue-600 to-indigo-600"></div>
+              <div key={bike.id} className="bg-slate-900 rounded-xl border border-slate-800 overflow-hidden flex flex-col relative hover:border-accent/30 transition-colors shadow-xl">
+                <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-accent to-purple-600"></div>
                 
                 <button 
                   onClick={() => onRemove(bike.id)}
@@ -48,7 +55,7 @@ export const ComparisonModal: React.FC<ComparisonModalProps> = ({ bikes, onClose
                 </button>
 
                 <div className="p-6 bg-gradient-to-b from-slate-800/50 to-slate-900 border-b border-slate-800">
-                   <div className="text-xs text-blue-400 font-bold uppercase mb-1 tracking-wider">{bike.brand}</div>
+                   <div className="text-xs text-accent font-bold uppercase mb-1 tracking-wider">{bike.brand}</div>
                    <h3 className="text-2xl font-bold text-white font-['Exo_2'] leading-tight mb-2">{bike.model}</h3>
                    <div className="text-xl font-semibold text-slate-200">{bike.price}</div>
                 </div>
@@ -109,16 +116,6 @@ export const ComparisonModal: React.FC<ComparisonModalProps> = ({ bikes, onClose
                    <div className="text-xs text-center text-slate-500">{labels.compatibilityScore}: <span className="text-white font-bold">{bike.matchScore}%</span></div>
                 </div>
               </div>
-            ))}
-            
-            {/* Add placeholder slots if less than 3 selected */}
-            {[...Array(3 - bikes.length)].map((_, i) => (
-               <div key={`empty-${i}`} className="hidden md:flex rounded-xl border-2 border-dashed border-slate-800 flex-col items-center justify-center p-8 opacity-50">
-                  <div className="w-12 h-12 rounded-full bg-slate-800 flex items-center justify-center mb-4">
-                    <span className="text-slate-600 text-xl font-bold">?</span>
-                  </div>
-                  <p className="text-slate-500 text-sm text-center">{labels.selectToCompare}</p>
-               </div>
             ))}
           </div>
         </div>

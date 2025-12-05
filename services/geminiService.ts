@@ -1,6 +1,5 @@
-
 import { GoogleGenAI, Type } from "@google/genai";
-import { BikePreference, RecommendationResult, Bike, BikeType, Dealership, IndianLanguage, FuelPrices, BikeCustomization, ChatMessage } from "../types";
+import { BikePreference, RecommendationResult, Bike, BikeType, Dealership, IndianLanguage, BikeCustomization, ChatMessage } from "../types";
 
 // Initialize the client (initial load)
 const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
@@ -10,7 +9,7 @@ const BIKE_SCHEMA = {
   properties: {
     marketInsight: {
       type: Type.STRING,
-      description: "A brief analysis of the 2-wheeler market conditions in the selected Indian state, referencing road conditions or local trends."
+      description: "A brief analysis of the 2-wheeler market conditions in the selected Indian state. WRITTEN IN THE USER'S SELECTED LANGUAGE."
     },
     bikes: {
       type: Type.ARRAY,
@@ -21,7 +20,7 @@ const BIKE_SCHEMA = {
           model: { type: Type.STRING },
           price: { type: Type.STRING, description: "Ex-showroom price in INR (e.g., ₹1.45 Lakh)" },
           type: { type: Type.STRING },
-          description: { type: Type.STRING, description: "Short punchy description of the bike highlighting key features." },
+          description: { type: Type.STRING, description: "Short punchy description highlighting features. WRITTEN IN THE USER'S SELECTED LANGUAGE." },
           specs: {
             type: Type.OBJECT,
             properties: {
@@ -33,9 +32,9 @@ const BIKE_SCHEMA = {
               seatHeight: { type: Type.STRING, description: "Seat height in mm (e.g., 800mm)" }
             }
           },
-          pros: { type: Type.ARRAY, items: { type: Type.STRING } },
-          cons: { type: Type.ARRAY, items: { type: Type.STRING } },
-          stateFitReason: { type: Type.STRING, description: "Specific reason why this bike is suitable for the selected Indian state/region." },
+          pros: { type: Type.ARRAY, items: { type: Type.STRING, description: "Pros in USER'S SELECTED LANGUAGE" } },
+          cons: { type: Type.ARRAY, items: { type: Type.STRING, description: "Cons in USER'S SELECTED LANGUAGE" } },
+          stateFitReason: { type: Type.STRING, description: "Why it fits the region. WRITTEN IN THE USER'S SELECTED LANGUAGE." },
           matchScore: { type: Type.NUMBER, description: "0-100 suitability score" },
           rating: { type: Type.NUMBER, description: "Average user rating out of 5 (e.g. 4.5)" },
           reviews: {
@@ -45,7 +44,7 @@ const BIKE_SCHEMA = {
               properties: {
                 author: { type: Type.STRING },
                 rating: { type: Type.NUMBER },
-                text: { type: Type.STRING, description: "Short realistic user review." }
+                text: { type: Type.STRING, description: "User review in USER'S SELECTED LANGUAGE." }
               }
             }
           },
@@ -53,8 +52,8 @@ const BIKE_SCHEMA = {
              type: Type.OBJECT,
              properties: {
                 fitScore: { type: Type.NUMBER, description: "0-100 score on how well the bike fits the rider's height/weight." },
-                verdict: { type: Type.STRING, description: "Short verdict (e.g., 'Perfect Fit', 'Slightly Tall', 'Cramped for legs')." },
-                description: { type: Type.STRING, description: "Explanation of how the seat height and weight handling matches the user stats." }
+                verdict: { type: Type.STRING, description: "Short verdict in USER'S SELECTED LANGUAGE (e.g., 'Perfect Fit', 'Slightly Tall')." },
+                description: { type: Type.STRING, description: "Explanation in USER'S SELECTED LANGUAGE." }
              }
           }
         }
@@ -84,31 +83,40 @@ export const getBikeRecommendations = async (prefs: BikePreference): Promise<Rec
   try {
     const prompt = `
       Act as an expert motorcycle consultant for the Indian market.
-      Recommend 6-9 distinct motorcycles available in India that match these user preferences:
       
-      - Budget: Approximately ₹${prefs.budget} Lakhs
-      - Type: ${prefs.type}
-      - Location/State: ${prefs.state} (Consider terrain, traffic, and popularity in this state)
+      LANGUAGE INSTRUCTION:
+      The user has selected the language: "${prefs.language}".
+      You MUST translate ALL descriptive text (description, pros, cons, stateFitReason, verdict, reviews, marketInsight) into ${prefs.language}.
+      Keep Brand Names (e.g., Royal Enfield, Yamaha) and Model Names (e.g., Classic 350, MT-15) in their original English script.
+      Keep Technical Specs (numbers, units like kmpl, bhp) in English.
+      Only the explanation/narrative text should be in ${prefs.language}.
+
+      TASK:
+      Recommend exactly 12 distinct motorcycles available in India that match these preferences:
+      - Budget: Around ₹${prefs.budget} Lakhs (You may go +/- 20% if it's a great fit).
+      - Primary Preference: ${prefs.type}
+      - Location: ${prefs.state}
       - Daily Usage: ${prefs.dailyUsageKm} km
-      - Rider Stats: Height ${prefs.userHeight}cm, Weight ${prefs.userWeight}kg.
-      - Language Context: ${prefs.language} (Ensure cultural nuances in description if possible)
-      - Model Year Preference: ${prefs.minYear} to ${prefs.maxYear} (Prioritize models released or updated in this range).
+      - Rider: ${prefs.userHeight}cm, ${prefs.userWeight}kg
+      - Year: ${prefs.minYear}-${prefs.maxYear}
 
-      Include a diverse and extensive mix of brands to give the user plenty of options:
-      1. Indian Market Leaders: Hero, Bajaj, TVS, Royal Enfield.
-      2. Legends & Niche: Java, Yezdi, BSA.
-      3. International Mass-Market: Honda, Yamaha, Suzuki.
-      4. Premium International: KTM, Kawasaki, Triumph, Harley-Davidson, BMW Motorrad, Ducati, Aprilia, Benelli.
-      5. Electric Innovators (if applicable): Ather, Ola, Ultraviolette, Tork, Revolt.
-
-      Ensure a mix of popular best-sellers and underrated gems that fit the budget.
+      DIVERSITY REQUIREMENT (Mandatory 12 bikes):
+      Even if the user selected a specific type, you MUST provide a mix to show alternatives.
+      1. 3 ${prefs.type} (The user's primary choice)
+      2. 2 Commuter / Efficiency bikes
+      3. 2 Sports / Performance bikes
+      4. 2 Cruiser / Retro bikes
+      5. 1 Adventure / Tourer
+      6. 2 Electric Vehicles (EV)
       
-      For 'ergonomics':
-      - Analyze if the seat height is comfortable for a person of ${prefs.userHeight}cm.
-      - Analyze if the bike weight/power is manageable for ${prefs.userWeight}kg.
-      - Provide a 'fitScore' (0-100) and a verdict (e.g. "Perfect", "Tiptoe Reach", "Cramped Legroom").
+      Total: 12 bikes.
 
-      Return the response strictly in JSON format matching the schema provided.
+      ERGONOMICS ANALYSIS:
+      - Compare seat height with ${prefs.userHeight}cm.
+      - Compare bike weight with ${prefs.userWeight}kg.
+      - fitScore: 0 (Unrideable) to 100 (Perfect extension/weight balance).
+
+      Return strictly JSON.
     `;
 
     const response = await ai.models.generateContent({
@@ -117,11 +125,10 @@ export const getBikeRecommendations = async (prefs: BikePreference): Promise<Rec
       config: {
         responseMimeType: "application/json",
         responseSchema: BIKE_SCHEMA,
-        temperature: 0.4,
+        temperature: 0.4, 
       }
     });
 
-    // Sanitize response to remove potential markdown fences
     let jsonStr = response.text || "{}";
     jsonStr = jsonStr.replace(/```json|```/g, "").trim();
 
@@ -140,7 +147,6 @@ export const getBikeRecommendations = async (prefs: BikePreference): Promise<Rec
     }
     
     if (!result.bikes || !Array.isArray(result.bikes)) {
-      console.warn("Invalid bikes structure received, resetting to empty array.", result);
       result.bikes = [];
     }
 
@@ -148,7 +154,7 @@ export const getBikeRecommendations = async (prefs: BikePreference): Promise<Rec
     result.bikes = result.bikes.map(bike => ({
       ...bike,
       id: Math.random().toString(36).substr(2, 9),
-      imageUrl: getPlaceholderImage(prefs.type)
+      imageUrl: getPlaceholderImage(bike.type || prefs.type)
     }));
 
     return result;
@@ -166,28 +172,29 @@ export const generateBikeImage = async (bike: Bike, state: string, customization
     let customPrompt = "";
     if (customization) {
       const accessories = customization.accessories.length > 0 ? `, equipped with ${customization.accessories.join(', ')}` : "";
-      const color = customization.color ? `, with a custom ${customization.color} paint job` : "";
+      const color = customization.color ? `, painting in ${customization.color} color` : "";
       customPrompt = `${color}${accessories}`;
     }
 
-    const prompt = `Generate a photorealistic image of a ${bike.brand} ${bike.model} motorcycle${customPrompt}. 
-    The background should be a scenic road typical of ${state}, India. 
-    The bike should be the main focus, sharp and detailed. Automotive advertising style.`;
+    // Enhanced prompt for Imagen 3/4
+    const prompt = `A highly photorealistic, 8k resolution, commercial automotive photography shot of a ${bike.brand} ${bike.model} motorcycle${customPrompt}. 
+    The bike is parked on a scenic, paved road in ${state}, India, with a blurred natural background.
+    Golden hour lighting, dramatic shadows, sharp focus on the motorcycle. 
+    The image should look like a high-end brochure photo.`;
 
-    const response = await ai.models.generateContent({
-      model: 'gemini-2.5-flash-image',
-      contents: { parts: [{ text: prompt }] },
+    const response = await ai.models.generateImages({
+      model: 'imagen-4.0-generate-001',
+      prompt: prompt,
       config: {
-        // responseMimeType is NOT supported for image generation models
-      }
+        numberOfImages: 1,
+        outputMimeType: 'image/jpeg',
+        aspectRatio: '16:9',
+      },
     });
     
-    if (response.candidates && response.candidates[0].content.parts) {
-       for (const part of response.candidates[0].content.parts) {
-          if (part.inlineData) {
-            return `data:${part.inlineData.mimeType};base64,${part.inlineData.data}`;
-          }
-       }
+    const base64EncodeString = response.generatedImages?.[0]?.image?.imageBytes;
+    if (base64EncodeString) {
+      return `data:image/jpeg;base64,${base64EncodeString}`;
     }
     return null;
 
@@ -197,77 +204,12 @@ export const generateBikeImage = async (bike: Bike, state: string, customization
   }
 };
 
-export const generateVeoVideo = async (imageBase64: string, prompt: string): Promise<string | null> => {
-  const win = window as any;
-  
-  // Robust Key Check Function
-  const ensureKeySelected = async () => {
-    if (win.aistudio && win.aistudio.hasSelectedApiKey && win.aistudio.openSelectKey) {
-         const hasKey = await win.aistudio.hasSelectedApiKey();
-         if (!hasKey) {
-             await win.aistudio.openSelectKey();
-         }
-    }
-  };
-
-  try {
-    await ensureKeySelected();
-
-    // Create a new instance to ensure the latest API key is used
-    const aiClient = new GoogleGenAI({ apiKey: process.env.API_KEY });
-
-    // Strip header if present
-    const cleanBase64 = imageBase64.includes("base64,") 
-      ? imageBase64.split("base64,")[1] 
-      : imageBase64;
-
-    let operation = await aiClient.models.generateVideos({
-      model: 'veo-3.1-fast-generate-preview',
-      prompt: prompt,
-      image: {
-        imageBytes: cleanBase64,
-        mimeType: 'image/png', 
-      },
-      config: {
-        numberOfVideos: 1,
-        resolution: '720p',
-        aspectRatio: '16:9'
-      }
-    });
-
-    // Polling for completion
-    while (!operation.done) {
-      await new Promise(resolve => setTimeout(resolve, 5000));
-      operation = await aiClient.operations.getVideosOperation({operation: operation});
-    }
-
-    if (operation.response?.generatedVideos?.[0]?.video?.uri) {
-       const videoUri = operation.response.generatedVideos[0].video.uri;
-       // Append API key for playback
-       return `${videoUri}&key=${process.env.API_KEY}`;
-    }
-    
-    return null;
-
-  } catch (error: any) {
-    console.error("Veo generation error:", error);
-    
-    // Specific error handling for missing/invalid key association
-    if (error.message && error.message.includes("Requested entity was not found")) {
-        console.log("Resetting API Key selection...");
-        if (win.aistudio && win.aistudio.openSelectKey) {
-             await win.aistudio.openSelectKey();
-        }
-    }
-    return null;
-  }
-};
-
 export const findDealerships = async (brand: string, state: string, language: IndianLanguage): Promise<{ dealerships: Dealership[], text: string }> => {
   try {
     const prompt = `Find top authorized ${brand} two-wheeler dealerships in major cities of ${state}, India. 
     List 3-4 specific dealerships with their names.
-    Also provide a brief 1-sentence helpful tip about servicing ${brand} bikes in this region in ${language}.`;
+    Also provide a brief 1-sentence helpful tip about servicing ${brand} bikes in this region.
+    IMPORTANT: The tip MUST be in ${language} language.`;
 
     const response = await ai.models.generateContent({
       model: 'gemini-2.5-flash',
@@ -303,49 +245,6 @@ export const findDealerships = async (brand: string, state: string, language: In
   }
 };
 
-export const getFuelPrices = async (state: string, language: IndianLanguage): Promise<FuelPrices | null> => {
-  try {
-    const prompt = `What are the current Petrol, Diesel, and EV charging rates in ${state}, India today?
-    Provide the prices in a structured format. Also mention if the trend is up or down.`;
-
-    const response = await ai.models.generateContent({
-      model: 'gemini-2.5-flash',
-      contents: prompt,
-      config: {
-        tools: [{ googleSearch: {} }],
-      }
-    });
-
-    const text = response.text || "";
-    const sources: {title: string, uri: string}[] = [];
-    
-    const groundingChunks = response.candidates?.[0]?.groundingMetadata?.groundingChunks;
-    if (groundingChunks) {
-       groundingChunks.forEach((chunk: any) => {
-          if (chunk.web?.uri) {
-             sources.push({ title: chunk.web.title || 'Source', uri: chunk.web.uri });
-          }
-       });
-    }
-
-    const petrolMatch = text.match(/Petrol[:\s]+₹?([\d.]+)/i);
-    const dieselMatch = text.match(/Diesel[:\s]+₹?([\d.]+)/i);
-    const evMatch = text.match(/EV|Electric[:\s]+₹?([\d.]+)/i);
-
-    return {
-       petrol: petrolMatch ? `₹${petrolMatch[1]}` : "₹96.72", 
-       diesel: dieselMatch ? `₹${dieselMatch[1]}` : "₹89.62",
-       ev: evMatch ? `₹${evMatch[1]}/kWh` : "₹18-25/kWh",
-       trend: text.length > 50 ? text.substring(0, 100) + "..." : text,
-       sources: sources.slice(0, 2)
-    };
-
-  } catch (error) {
-    console.error("Fuel price fetch error", error);
-    return null;
-  }
-}
-
 export const askExpertAboutBike = async (bike: Bike, history: any[], message: string, language: IndianLanguage): Promise<string> => {
   try {
     const chat = ai.chats.create({
@@ -354,11 +253,10 @@ export const askExpertAboutBike = async (bike: Bike, history: any[], message: st
       config: {
         systemInstruction: `You are an expert motorcycle mechanic and consultant. 
       The user is asking about the ${bike.brand} ${bike.model}. 
-      They are speaking in ${language} (or English).
+      CRITICAL: The user is speaking in ${language}. You MUST answer in ${language}.
       Answer their questions specifically about this bike's maintenance, performance, reliability, and costs.
       Keep answers concise, helpful, and polite. 
-      If asked about price, recall it is ${bike.price}.
-      Use the provided chat history for context.`
+      If asked about price, recall it is ${bike.price}.`
       }
     });
 
@@ -367,5 +265,52 @@ export const askExpertAboutBike = async (bike: Bike, history: any[], message: st
   } catch (error) {
     console.error("Chat error:", error);
     return "I'm having some engine trouble processing that request. Please try again.";
+  }
+};
+
+export const generateVeoVideo = async (image: string, prompt: string): Promise<string | null> => {
+  try {
+    // Create new instance to ensure we use the potentially newly selected API key
+    const veoAi = new GoogleGenAI({ apiKey: process.env.API_KEY });
+
+    // Extract base64 and mimeType from Data URL
+    const matches = image.match(/^data:(.+);base64,(.+)$/);
+    if (!matches || matches.length !== 3) {
+      throw new Error("Invalid image format provided.");
+    }
+    const mimeType = matches[1];
+    const imageBytes = matches[2];
+
+    let operation = await veoAi.models.generateVideos({
+      model: 'veo-3.1-fast-generate-preview',
+      prompt: prompt,
+      image: {
+        imageBytes: imageBytes,
+        mimeType: mimeType,
+      },
+      config: {
+        numberOfVideos: 1,
+        resolution: '720p',
+        aspectRatio: '16:9'
+      }
+    });
+
+    while (!operation.done) {
+      await new Promise(resolve => setTimeout(resolve, 5000));
+      operation = await veoAi.operations.getVideosOperation({operation: operation});
+    }
+
+    const videoUri = operation.response?.generatedVideos?.[0]?.video?.uri;
+    
+    if (videoUri) {
+      // Append API key for access as per guidelines
+      return `${videoUri}&key=${process.env.API_KEY}`;
+    }
+    
+    return null;
+
+  } catch (error) {
+    console.error("Veo generation error:", error);
+    return null;
   }
 };

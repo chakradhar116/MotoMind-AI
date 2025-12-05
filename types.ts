@@ -77,6 +77,13 @@ export enum IndianLanguage {
   SANTALI = 'Santali'
 }
 
+export enum ThemeType {
+  CYBER = 'cyber',
+  RACING = 'racing',
+  ECO = 'eco',
+  ROYAL = 'royal'
+}
+
 export interface BikePreference {
   budget: number; // In Lakhs
   type: BikeType;

@@ -5,17 +5,54 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>MotoMind AI - Smart Bike Recommender</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@100;300;400;500;600;700;800&family=Inter:wght@300;400;500;600&family=Rajdhani:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              accent: 'var(--accent-color)',
+              accentGlow: 'var(--accent-glow)',
+            }
+          }
+        }
+      }
+    </script>
     <style>
+      :root {
+        /* Default: Cyber Blue */
+        --accent-color: #3b82f6;
+        --accent-glow: rgba(59, 130, 246, 0.6);
+        --glass-border: rgba(255, 255, 255, 0.08);
+      }
+
+      /* Theme Variants */
+      [data-theme='racing'] {
+        --accent-color: #ef4444;
+        --accent-glow: rgba(239, 68, 68, 0.6);
+      }
+      
+      [data-theme='eco'] {
+        --accent-color: #10b981;
+        --accent-glow: rgba(16, 185, 129, 0.6);
+      }
+      
+      [data-theme='royal'] {
+        --accent-color: #eab308;
+        --accent-glow: rgba(234, 179, 8, 0.6);
+      }
+
       body {
         font-family: 'Inter', sans-serif;
-        background-color: #000000;
+        background-color: #020617; /* Slate 950 */
         color: #f8fafc;
         overflow-x: hidden;
       }
+      
       h1, h2, h3, h4, h5, h6 {
         font-family: 'Exo 2', sans-serif;
       }
+      
       .font-tech {
         font-family: 'Rajdhani', sans-serif;
       }
@@ -28,9 +65,12 @@
         width: 100vw;
         height: 100vh;
         z-index: -2;
-        background: radial-gradient(circle at 15% 50%, rgba(76, 29, 149, 0.15), transparent 25%),
-                    radial-gradient(circle at 85% 30%, rgba(37, 99, 235, 0.15), transparent 25%);
+        background: 
+          radial-gradient(circle at 15% 50%, var(--accent-glow), transparent 40%),
+          radial-gradient(circle at 85% 30%, var(--accent-glow), transparent 40%);
+        opacity: 0.15;
         pointer-events: none;
+        transition: all 0.5s ease;
       }
 
       .tech-grid {
@@ -41,67 +81,95 @@
         height: 100%;
         z-index: -1;
         background-image: 
-          linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
-          linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
-        background-size: 50px 50px;
-        mask-image: radial-gradient(circle at center, black 40%, transparent 100%);
+          linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+        background-size: 60px 60px;
+        mask-image: radial-gradient(circle at 50% 50%, black 30%, transparent 80%);
         pointer-events: none;
       }
 
-      /* Glassmorphism Utilities */
+      /* Premium Glassmorphism */
       .glass-panel {
-        background: rgba(15, 23, 42, 0.6);
-        backdrop-filter: blur(16px);
-        -webkit-backdrop-filter: blur(16px);
-        border: 1px solid rgba(255, 255, 255, 0.08);
-        box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+        background: rgba(15, 23, 42, 0.7);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        border: 1px solid var(--glass-border);
+        box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
       }
       
       .glass-card {
         background: rgba(30, 41, 59, 0.4);
         backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
         border: 1px solid rgba(255, 255, 255, 0.05);
+        transition: transform 0.1s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+        transform-style: preserve-3d;
+      }
+      
+      .glass-card:hover {
+        background: rgba(30, 41, 59, 0.6);
+        border-color: var(--accent-color);
+        box-shadow: 0 0 20px var(--accent-glow);
+      }
+
+      /* Custom Range Slider */
+      input[type=range] {
+        -webkit-appearance: none;
+        background: transparent;
+      }
+      
+      input[type=range]::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        height: 20px;
+        width: 20px;
+        border-radius: 50%;
+        background: #ffffff;
+        cursor: pointer;
+        margin-top: -8px;
+        box-shadow: 0 0 10px var(--accent-glow);
+        border: 2px solid var(--accent-color);
+        transition: transform 0.1s;
+      }
+
+      input[type=range]::-webkit-slider-thumb:hover {
+        transform: scale(1.2);
+      }
+
+      input[type=range]::-webkit-slider-runnable-track {
+        width: 100%;
+        height: 4px;
+        cursor: pointer;
+        background: #1e293b;
+        border-radius: 2px;
+      }
+      
+      input[type=range]:focus {
+        outline: none;
       }
 
       /* Custom Scrollbar */
       ::-webkit-scrollbar {
-        width: 6px;
+        width: 8px;
       }
       ::-webkit-scrollbar-track {
         background: #020617; 
       }
       ::-webkit-scrollbar-thumb {
         background: #334155; 
-        border-radius: 10px;
+        border-radius: 4px;
+        border: 2px solid #020617;
       }
       ::-webkit-scrollbar-thumb:hover {
         background: #475569; 
       }
       
       /* Animations */
-      @keyframes float {
-        0% { transform: translateY(0px); }
-        50% { transform: translateY(-10px); }
-        100% { transform: translateY(0px); }
-      }
-      .animate-float {
-        animation: float 6s ease-in-out infinite;
-      }
-      
-      @keyframes pulse-glow {
-        0%, 100% { box-shadow: 0 0 15px rgba(59, 130, 246, 0.1); }
-        50% { box-shadow: 0 0 25px rgba(59, 130, 246, 0.3); }
-      }
-      .animate-pulse-glow {
-        animation: pulse-glow 3s infinite;
-      }
-
       @keyframes slideUp {
-        from { transform: translateY(20px); opacity: 0; }
+        from { transform: translateY(30px); opacity: 0; }
         to { transform: translateY(0); opacity: 1; }
       }
       .animate-slideUp {
-        animation: slideUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        animation: slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
       }
 
       @keyframes fadeIn {
@@ -109,7 +177,40 @@
         to { opacity: 1; }
       }
       .animate-fadeIn {
-        animation: fadeIn 0.6s ease-out forwards;
+        animation: fadeIn 0.5s ease-out forwards;
+      }
+      
+      /* Sheen Effect */
+      .sheen-effect {
+        position: relative;
+        overflow: hidden;
+      }
+      .sheen-effect::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 50%;
+        height: 100%;
+        background: linear-gradient(to right, transparent, rgba(255,255,255,0.05), transparent);
+        transform: skewX(-25deg);
+        transition: left 0.5s;
+      }
+      .sheen-effect:hover::after {
+        left: 150%;
+        transition: left 0.7s ease-in-out;
+      }
+
+      /* Radar Chart Animation */
+      .radar-polygon {
+        opacity: 0;
+        animation: drawRadar 1s ease-out forwards;
+        transform-origin: center;
+      }
+      
+      @keyframes drawRadar {
+        from { opacity: 0; transform: scale(0.8); }
+        to { opacity: 0.6; transform: scale(1); }
       }
     </style>
   <script type="importmap">
