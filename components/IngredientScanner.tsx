@@ -1,4 +1,3 @@
-
 import React, { useState, useRef, useEffect } from 'react';
 import { BikeType, IndianState, BikePreference, IndianLanguage } from '../types';
 
@@ -96,51 +95,64 @@ export const BikePreferenceForm: React.FC<BikeFormProps> = ({ onSearch, isAnalyz
 
   return (
     <div className="w-full max-w-4xl mx-auto">
-      <div className="bg-slate-900/80 border border-slate-800 rounded-2xl p-6 sm:p-8 shadow-2xl shadow-blue-900/20 backdrop-blur-sm">
-        <h2 className="text-2xl font-bold text-white mb-6 font-['Exo_2'] flex items-center gap-2">
-          <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4" />
-          </svg>
-          {labels.findYourRide}
-        </h2>
+      <div className="glass-panel rounded-3xl p-8 sm:p-10 shadow-[0_20px_50px_rgba(0,0,0,0.5)] relative overflow-hidden transition-all duration-500 hover:shadow-[0_20px_50px_rgba(37,99,235,0.15)] border-t border-white/10">
         
-        <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-8">
+        {/* Header Section */}
+        <div className="flex items-center gap-4 mb-8 border-b border-white/5 pb-6">
+          <div className="p-3 bg-blue-600/20 rounded-xl border border-blue-500/30 shadow-[0_0_15px_rgba(37,99,235,0.3)]">
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4" />
+            </svg>
+          </div>
+          <h2 className="text-2xl font-bold text-white font-['Exo_2'] tracking-wide">
+             {labels.findYourRide}
+          </h2>
+        </div>
+        
+        <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-10 relative z-10">
           
           {/* Budget Slider */}
-          <div className="space-y-3">
-            <label className="text-slate-400 text-sm font-medium flex justify-between">
+          <div className="space-y-4 group">
+            <label className="text-slate-400 text-sm font-medium flex justify-between group-hover:text-blue-400 transition-colors uppercase tracking-wider font-tech">
               <span>{labels.budget}</span>
-              <span className="text-blue-400 font-bold">₹ {budget} Lakh</span>
+              <span className="text-white font-bold bg-slate-800 px-3 py-1 rounded-md border border-slate-700 shadow-inner">₹ {budget} Lakh</span>
             </label>
-            <input 
-              type="range" 
-              min="0.5" 
-              max="15" 
-              step="0.1" 
-              value={budget} 
-              onChange={(e) => setBudget(parseFloat(e.target.value))}
-              className="w-full h-2 bg-slate-700 rounded-lg appearance-none cursor-pointer accent-blue-500"
-            />
-            <div className="flex justify-between text-xs text-slate-600">
+            <div className="relative h-2 bg-slate-800 rounded-full">
+               <div className="absolute h-full bg-blue-600 rounded-full" style={{width: `${(budget/15)*100}%`}}></div>
+               <input 
+                type="range" 
+                min="0.5" 
+                max="15" 
+                step="0.1" 
+                value={budget} 
+                onChange={(e) => setBudget(parseFloat(e.target.value))}
+                className="absolute w-full h-full opacity-0 cursor-pointer"
+              />
+              <div 
+                className="absolute h-4 w-4 bg-white rounded-full shadow-[0_0_10px_rgba(255,255,255,0.5)] top-1/2 -translate-y-1/2 pointer-events-none transition-all"
+                style={{left: `calc(${(budget/15)*100}% - 8px)`}}
+              ></div>
+            </div>
+            <div className="flex justify-between text-[10px] text-slate-600 font-bold uppercase tracking-widest">
               <span>₹50k</span>
               <span>₹15L+</span>
             </div>
           </div>
 
           {/* State Selector */}
-          <div className="space-y-3">
-            <label className="text-slate-400 text-sm font-medium">{labels.location}</label>
+          <div className="space-y-4 group">
+            <label className="text-slate-400 text-sm font-medium group-hover:text-blue-400 transition-colors uppercase tracking-wider font-tech">{labels.location}</label>
             <div className="relative">
               <select 
                 value={state}
                 onChange={(e) => setState(e.target.value as IndianState)}
-                className="w-full bg-slate-800 text-white text-sm rounded-xl px-4 py-3 border border-slate-700 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none transition-all appearance-none cursor-pointer"
+                className="w-full bg-slate-900/60 text-white text-sm rounded-xl px-4 py-3 border border-slate-700 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none transition-all appearance-none cursor-pointer hover:bg-slate-800/80 shadow-inner"
               >
                 {Object.values(IndianState).map((s) => (
                   <option key={s} value={s}>{s}</option>
                 ))}
               </select>
-              <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-slate-400">
+              <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-blue-500">
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                 </svg>
@@ -149,22 +161,22 @@ export const BikePreferenceForm: React.FC<BikeFormProps> = ({ onSearch, isAnalyz
           </div>
 
           {/* Bike Type - Custom Dropdown */}
-          <div className="space-y-3 md:col-span-2" ref={dropdownRef}>
-            <label className="text-slate-400 text-sm font-medium">{labels.category}</label>
+          <div className="space-y-4 md:col-span-2" ref={dropdownRef}>
+            <label className="text-slate-400 text-sm font-medium uppercase tracking-wider font-tech">{labels.category}</label>
             <div className="relative">
               <button
                 type="button"
                 onClick={() => setIsTypeDropdownOpen(!isTypeDropdownOpen)}
-                className="w-full bg-slate-800 hover:bg-slate-750 text-white text-left rounded-xl px-4 py-3 border border-slate-700 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none transition-all flex items-center justify-between shadow-sm"
+                className={`w-full bg-slate-900/60 hover:bg-slate-800/80 text-white text-left rounded-xl px-4 py-3 border transition-all flex items-center justify-between shadow-inner ${isTypeDropdownOpen ? 'border-blue-500 ring-1 ring-blue-500' : 'border-slate-700 hover:border-blue-500/50'}`}
               >
-                <div className="flex items-center gap-3">
-                  <div className="p-1.5 bg-slate-700/50 rounded-lg">
+                <div className="flex items-center gap-4">
+                  <div className="p-2 bg-slate-800 rounded-lg shadow-sm">
                     {getBikeIcon(type)}
                   </div>
-                  <span className="font-medium">{type}</span>
+                  <span className="font-medium tracking-wide">{type}</span>
                 </div>
                 <svg 
-                  className={`w-5 h-5 text-slate-500 transition-transform duration-300 ${isTypeDropdownOpen ? 'rotate-180' : ''}`} 
+                  className={`w-5 h-5 text-slate-500 transition-transform duration-300 ${isTypeDropdownOpen ? 'rotate-180 text-blue-500' : ''}`} 
                   fill="none" 
                   viewBox="0 0 24 24" 
                   stroke="currentColor"
@@ -174,7 +186,7 @@ export const BikePreferenceForm: React.FC<BikeFormProps> = ({ onSearch, isAnalyz
               </button>
 
               {isTypeDropdownOpen && (
-                <div className="absolute z-50 mt-2 w-full bg-slate-900 border border-slate-700 rounded-xl shadow-2xl max-h-72 overflow-y-auto custom-scrollbar backdrop-blur-xl animate-fadeIn">
+                <div className="absolute z-50 mt-2 w-full bg-slate-900/95 border border-slate-700 rounded-xl shadow-[0_10px_40px_rgba(0,0,0,0.5)] max-h-72 overflow-y-auto custom-scrollbar backdrop-blur-xl animate-fadeIn origin-top">
                    <div className="p-2 grid grid-cols-1 sm:grid-cols-2 gap-1">
                       {Object.values(BikeType).map((t) => (
                         <button
@@ -184,13 +196,13 @@ export const BikePreferenceForm: React.FC<BikeFormProps> = ({ onSearch, isAnalyz
                             setType(t);
                             setIsTypeDropdownOpen(false);
                           }}
-                          className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all ${
+                          className={`flex items-center gap-3 px-3 py-3 rounded-lg text-sm font-medium transition-all ${
                             type === t 
-                              ? 'bg-blue-600 text-white shadow-md shadow-blue-600/20' 
+                              ? 'bg-blue-600 text-white shadow-lg shadow-blue-600/20' 
                               : 'text-slate-300 hover:bg-slate-800 hover:text-white hover:pl-4'
                           }`}
                         >
-                          <div className={`${type === t ? 'text-white' : 'text-slate-400'}`}>
+                          <div className={`${type === t ? 'text-white' : 'text-slate-500'}`}>
                             {getBikeIcon(t)}
                           </div>
                           {t}
@@ -207,20 +219,25 @@ export const BikePreferenceForm: React.FC<BikeFormProps> = ({ onSearch, isAnalyz
             </div>
           </div>
           
-          {/* Rider Profile Section */}
-          <div className="md:col-span-2 border-t border-slate-800 pt-6 mt-2">
-            <h3 className="text-white text-md font-bold mb-4 flex items-center gap-2">
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-indigo-400" viewBox="0 0 20 20" fill="currentColor">
-                <path fillRule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clipRule="evenodd" />
-              </svg>
+          {/* Rider Profile Section - Highlighted */}
+          <div className="md:col-span-2 bg-indigo-900/10 rounded-2xl p-6 border border-indigo-500/20 relative overflow-hidden group">
+            <div className="absolute inset-0 bg-gradient-to-r from-indigo-500/5 to-transparent pointer-events-none"></div>
+            
+            <h3 className="text-indigo-300 text-sm font-bold mb-6 flex items-center gap-2 uppercase tracking-widest font-tech relative z-10">
+              <span className="p-1.5 bg-indigo-500/20 rounded-md border border-indigo-500/30">
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+                  <path fillRule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clipRule="evenodd" />
+                </svg>
+              </span>
               {labels.riderProfile}
             </h3>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
+            
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-10 relative z-10">
               {/* Height Slider */}
-              <div className="space-y-3">
-                <label className="text-slate-400 text-sm font-medium flex justify-between">
+              <div className="space-y-4">
+                <label className="text-slate-400 text-xs font-bold flex justify-between uppercase tracking-wider">
                   <span>{labels.height}</span>
-                  <span className="text-indigo-400 font-bold">{userHeight} cm</span>
+                  <span className="text-indigo-300 bg-indigo-900/40 px-2 py-0.5 rounded border border-indigo-500/30">{userHeight} cm</span>
                 </label>
                 <input 
                   type="range" 
@@ -229,19 +246,15 @@ export const BikePreferenceForm: React.FC<BikeFormProps> = ({ onSearch, isAnalyz
                   step="1" 
                   value={userHeight} 
                   onChange={(e) => setUserHeight(parseInt(e.target.value))}
-                  className="w-full h-2 bg-slate-700 rounded-lg appearance-none cursor-pointer accent-indigo-500"
+                  className="w-full h-1.5 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-indigo-500 hover:accent-indigo-400 transition-all"
                 />
-                <div className="flex justify-between text-xs text-slate-600">
-                  <span>140cm</span>
-                  <span>210cm</span>
-                </div>
               </div>
 
               {/* Weight Slider */}
-              <div className="space-y-3">
-                <label className="text-slate-400 text-sm font-medium flex justify-between">
+              <div className="space-y-4">
+                <label className="text-slate-400 text-xs font-bold flex justify-between uppercase tracking-wider">
                   <span>{labels.riderWeight}</span>
-                  <span className="text-indigo-400 font-bold">{userWeight} kg</span>
+                  <span className="text-indigo-300 bg-indigo-900/40 px-2 py-0.5 rounded border border-indigo-500/30">{userWeight} kg</span>
                 </label>
                 <input 
                   type="range" 
@@ -250,22 +263,18 @@ export const BikePreferenceForm: React.FC<BikeFormProps> = ({ onSearch, isAnalyz
                   step="1" 
                   value={userWeight} 
                   onChange={(e) => setUserWeight(parseInt(e.target.value))}
-                  className="w-full h-2 bg-slate-700 rounded-lg appearance-none cursor-pointer accent-indigo-500"
+                  className="w-full h-1.5 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-indigo-500 hover:accent-indigo-400 transition-all"
                 />
-                <div className="flex justify-between text-xs text-slate-600">
-                  <span>40kg</span>
-                  <span>140kg</span>
-                </div>
               </div>
             </div>
           </div>
 
           {/* Model Year Range */}
-          <div className="space-y-3 md:col-span-2">
-            <label className="text-slate-400 text-sm font-medium">{labels.modelYear}</label>
-            <div className="flex gap-4">
+          <div className="space-y-4 md:col-span-2">
+            <label className="text-slate-400 text-sm font-medium uppercase tracking-wider font-tech">{labels.modelYear}</label>
+            <div className="flex gap-6">
               <div className="flex-1 relative group">
-                 <label className="absolute -top-2 left-3 bg-slate-900 px-1 text-[10px] text-slate-500 group-focus-within:text-blue-500 transition-colors">{labels.yearFrom}</label>
+                 <label className="absolute -top-2 left-3 bg-slate-900 px-2 text-[10px] text-slate-500 group-focus-within:text-blue-500 transition-colors z-10 font-bold uppercase tracking-wider">{labels.yearFrom}</label>
                  <select 
                    value={minYear}
                    onChange={(e) => {
@@ -273,18 +282,13 @@ export const BikePreferenceForm: React.FC<BikeFormProps> = ({ onSearch, isAnalyz
                      setMinYear(val);
                      if (val > maxYear) setMaxYear(val);
                    }}
-                   className="w-full bg-slate-800 text-white text-sm rounded-xl px-4 py-3 border border-slate-700 focus:border-blue-500 outline-none appearance-none cursor-pointer"
+                   className="w-full bg-slate-900/60 text-white text-sm rounded-xl px-4 py-3 border border-slate-700 focus:border-blue-500 outline-none appearance-none cursor-pointer shadow-inner hover:border-slate-600 transition-colors"
                  >
                    {years.map(y => <option key={y} value={y}>{y}</option>)}
                  </select>
-                 <div className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-slate-500">
-                    <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                    </svg>
-                 </div>
               </div>
               <div className="flex-1 relative group">
-                <label className="absolute -top-2 left-3 bg-slate-900 px-1 text-[10px] text-slate-500 group-focus-within:text-blue-500 transition-colors">{labels.yearTo}</label>
+                <label className="absolute -top-2 left-3 bg-slate-900 px-2 text-[10px] text-slate-500 group-focus-within:text-blue-500 transition-colors z-10 font-bold uppercase tracking-wider">{labels.yearTo}</label>
                  <select 
                    value={maxYear}
                    onChange={(e) => {
@@ -292,32 +296,33 @@ export const BikePreferenceForm: React.FC<BikeFormProps> = ({ onSearch, isAnalyz
                       setMaxYear(val);
                       if (val < minYear) setMinYear(val);
                    }}
-                   className="w-full bg-slate-800 text-white text-sm rounded-xl px-4 py-3 border border-slate-700 focus:border-blue-500 outline-none appearance-none cursor-pointer"
+                   className="w-full bg-slate-900/60 text-white text-sm rounded-xl px-4 py-3 border border-slate-700 focus:border-blue-500 outline-none appearance-none cursor-pointer shadow-inner hover:border-slate-600 transition-colors"
                  >
                    {years.map(y => <option key={y} value={y}>{y}</option>)}
                  </select>
-                 <div className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-slate-500">
-                    <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                    </svg>
-                 </div>
               </div>
             </div>
           </div>
 
           {/* Daily Usage */}
-          <div className="space-y-3 md:col-span-2">
-            <label className="text-slate-400 text-sm font-medium">{labels.dailyUsage}: <span className="text-white">{usage} km</span></label>
-             <input 
-              type="range" 
-              min="5" 
-              max="150" 
-              step="5" 
-              value={usage} 
-              onChange={(e) => setUsage(parseInt(e.target.value))}
-              className="w-full h-2 bg-slate-700 rounded-lg appearance-none cursor-pointer accent-indigo-500"
-            />
-            <div className="flex justify-between text-xs text-slate-600">
+          <div className="space-y-4 md:col-span-2 group">
+            <label className="text-slate-400 text-sm font-medium flex justify-between group-hover:text-blue-400 transition-colors uppercase tracking-wider font-tech">
+              <span>{labels.dailyUsage}</span>
+              <span className="text-white font-bold bg-slate-800 px-2 py-0.5 rounded border border-slate-700">{usage} km</span>
+            </label>
+            <div className="relative h-2 bg-slate-800 rounded-full">
+               <div className="absolute h-full bg-blue-500 rounded-full" style={{width: `${(usage/150)*100}%`}}></div>
+               <input 
+                type="range" 
+                min="5" 
+                max="150" 
+                step="5" 
+                value={usage} 
+                onChange={(e) => setUsage(parseInt(e.target.value))}
+                className="absolute w-full h-full opacity-0 cursor-pointer"
+              />
+            </div>
+            <div className="flex justify-between text-[10px] text-slate-600 font-bold uppercase tracking-widest">
               <span>5km</span>
               <span>150km+</span>
             </div>
@@ -326,15 +331,16 @@ export const BikePreferenceForm: React.FC<BikeFormProps> = ({ onSearch, isAnalyz
           <button
             type="submit"
             disabled={isAnalyzing}
-            className={`md:col-span-2 w-full py-4 rounded-xl font-bold text-white tracking-wide transition-all transform flex items-center justify-center gap-3 uppercase text-sm
+            className={`md:col-span-2 w-full py-5 rounded-xl font-bold text-white tracking-[0.1em] transition-all transform flex items-center justify-center gap-4 uppercase text-sm font-tech relative overflow-hidden group
               ${isAnalyzing 
                 ? 'bg-slate-800 cursor-not-allowed opacity-50 border border-slate-700' 
-                : 'bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 shadow-xl shadow-blue-600/20 hover:scale-[1.01]'
+                : 'bg-blue-600 hover:bg-blue-500 shadow-[0_0_20px_rgba(37,99,235,0.4)] hover:shadow-[0_0_30px_rgba(37,99,235,0.6)] hover:-translate-y-1'
               }`}
           >
+            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700"></div>
             {isAnalyzing ? (
               <>
-                <svg className="animate-spin h-5 w-5 text-blue-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                <svg className="animate-spin h-5 w-5 text-blue-300" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                   <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                   <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                 </svg>
@@ -343,7 +349,7 @@ export const BikePreferenceForm: React.FC<BikeFormProps> = ({ onSearch, isAnalyz
             ) : (
               <>
                 <span>{labels.findBikeBtn}</span>
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 group-hover:translate-x-1 transition-transform" viewBox="0 0 20 20" fill="currentColor">
                   <path fillRule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clipRule="evenodd" />
                 </svg>
               </>
