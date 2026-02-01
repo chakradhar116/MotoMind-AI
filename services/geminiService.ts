@@ -21,6 +21,7 @@ const BIKE_SCHEMA = {
           price: { type: Type.STRING, description: "Ex-showroom price in INR (e.g., ₹1.45 Lakh)" },
           type: { type: Type.STRING },
           description: { type: Type.STRING, description: "Short punchy description highlighting features. WRITTEN IN THE USER'S SELECTED LANGUAGE." },
+          isNewLaunch: { type: Type.BOOLEAN, description: "True ONLY if the model was released or significantly updated in late 2024 or 2025." },
           specs: {
             type: Type.OBJECT,
             properties: {
@@ -84,12 +85,12 @@ export const getBikeRecommendations = async (prefs: BikePreference): Promise<Rec
     const prompt = `
       Act as an expert motorcycle consultant for the Indian market.
       
-      LANGUAGE INSTRUCTION:
+      LANGUAGE INSTRUCTION (Hybrid Localization):
       The user has selected the language: "${prefs.language}".
-      You MUST translate ALL descriptive text (description, pros, cons, stateFitReason, verdict, reviews, marketInsight) into ${prefs.language}.
-      Keep Brand Names (e.g., Royal Enfield, Yamaha) and Model Names (e.g., Classic 350, MT-15) in their original English script.
-      Keep Technical Specs (numbers, units like kmpl, bhp) in English.
-      Only the explanation/narrative text should be in ${prefs.language}.
+      1. You MUST translate ALL descriptive text (description, pros, cons, stateFitReason, verdict, reviews, marketInsight) into ${prefs.language}.
+      2. CRITICAL: Keep Brand Names (e.g., Royal Enfield, Yamaha) and Model Names (e.g., Himalayan 450, MT-15) in English.
+      3. CRITICAL: Keep Technical Specs (numbers, units like kmpl, bhp, cc) in English.
+      4. If the language is Hindi or a regional Indian language, use a conversational, helpful tone (Hinglish style is acceptable for technical context if common).
 
       TASK:
       Recommend exactly 12 distinct motorcycles available in India that match these preferences:
@@ -98,7 +99,10 @@ export const getBikeRecommendations = async (prefs: BikePreference): Promise<Rec
       - Location: ${prefs.state}
       - Daily Usage: ${prefs.dailyUsageKm} km
       - Rider: ${prefs.userHeight}cm, ${prefs.userWeight}kg
-      - Year: ${prefs.minYear}-${prefs.maxYear}
+      
+      MARKET RECENCY (2024-2025):
+      - PRIORITY: Include recently launched bikes or 2024/2025 updated models if they fit the budget (e.g., RE Himalayan 450, Triumph Speed 400, New KTM Dukes, Ather Rizta, etc.).
+      - Set the 'isNewLaunch' boolean to TRUE for these recent models.
 
       DIVERSITY REQUIREMENT (Mandatory 12 bikes):
       Even if the user selected a specific type, you MUST provide a mix to show alternatives.
@@ -125,7 +129,7 @@ export const getBikeRecommendations = async (prefs: BikePreference): Promise<Rec
       config: {
         responseMimeType: "application/json",
         responseSchema: BIKE_SCHEMA,
-        temperature: 0.4, 
+        temperature: 0.45, 
       }
     });
 

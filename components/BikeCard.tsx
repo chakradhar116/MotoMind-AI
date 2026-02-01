@@ -1,4 +1,3 @@
-
 import React, { useState, useRef } from 'react';
 import { Bike, BikeCustomization } from '../types';
 import { generateBikeImage } from '../services/geminiService';
@@ -164,7 +163,7 @@ export const BikeCard: React.FC<BikeCardProps> = ({ bike, onClick, onToggleCompa
       style={{
         transform: `perspective(1000px) rotateX(${rotation.x}deg) rotateY(${rotation.y}deg)`,
       }}
-      className={`glass-card rounded-2xl overflow-hidden cursor-pointer group relative flex flex-col h-full hover:shadow-2xl duration-200 ease-out border border-white/5 ${isComparing ? 'ring-2 ring-accent ring-offset-2 ring-offset-slate-900' : ''}`}
+      className={`glass-card rounded-2xl overflow-hidden cursor-pointer group relative flex flex-col h-full hover:shadow-[0_0_30px_rgba(59,130,246,0.3)] duration-300 ease-out border border-white/5 ${isComparing ? 'ring-2 ring-accent ring-offset-2 ring-offset-slate-900' : ''}`}
     >
       {/* Sheen overlay */}
       <div className="absolute inset-0 bg-gradient-to-tr from-white/0 via-white/5 to-white/0 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-10 mix-blend-overlay"></div>
@@ -238,8 +237,21 @@ export const BikeCard: React.FC<BikeCardProps> = ({ bike, onClick, onToggleCompa
             className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-105"
             style={{ backgroundImage: `url(${currentImage})`, transform: `translateX(${rotation.y * 0.5}px)` }}
         >
-            <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-transparent to-black/30"></div>
+            <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-transparent to-black/40"></div>
         </div>
+        
+        {/* NEW LAUNCH BADGE */}
+        {bike.isNewLaunch && (
+          <div className="absolute bottom-4 left-4 z-20">
+             <div className="relative">
+                <div className="absolute inset-0 bg-blue-500 blur-md opacity-50 animate-pulse"></div>
+                <div className="relative bg-gradient-to-r from-blue-600 to-indigo-600 text-white text-[10px] font-black px-3 py-1 rounded-full uppercase tracking-widest font-tech shadow-lg border border-white/20 flex items-center gap-1">
+                   <span className="w-1.5 h-1.5 bg-white rounded-full animate-ping"></span>
+                   {labels.newLaunch}
+                </div>
+             </div>
+          </div>
+        )}
         
         {/* Quick View */}
         <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-20 pointer-events-none">
@@ -385,10 +397,10 @@ export const BikeCard: React.FC<BikeCardProps> = ({ bike, onClick, onToggleCompa
         )}
 
         <div className="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black via-black/80 to-transparent flex justify-between items-end">
-          <div className="bg-accent text-white text-[10px] font-bold px-2 py-0.5 rounded uppercase tracking-wider font-tech shadow-lg">
+          <div className="bg-accent text-white text-[10px] font-bold px-2 py-0.5 rounded uppercase tracking-wider font-tech shadow-lg ml-auto">
              {bike.brand}
           </div>
-          <div className="text-xl font-bold text-white tracking-tight drop-shadow-md">
+          <div className="text-xl font-bold text-white tracking-tight drop-shadow-md ml-4">
              {bike.price}
           </div>
         </div>

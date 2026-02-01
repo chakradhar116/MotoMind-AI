@@ -134,6 +134,7 @@ export interface Bike {
   rating: number; // Average rating
   reviews: Review[];
   ergonomics: Ergonomics;
+  isNewLaunch?: boolean; // New field
 }
 
 export interface ChatMessage {

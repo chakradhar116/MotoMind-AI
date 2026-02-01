@@ -95,6 +95,7 @@ const english = {
   basedOnStats: "Based on your height and weight",
   riderStatsUsed: "Rider Stats Used",
   calculationMethod: "How it works",
+  newLaunch: "NEW LAUNCH",
 };
 
 export const translations: Record<IndianLanguage, typeof english> = {
@@ -120,7 +121,8 @@ export const translations: Record<IndianLanguage, typeof english> = {
     basedOnStats: "आपकी ऊंचाई और वजन के आधार पर",
     heroSubtitle: "सिर्फ बाइक न खरीदें। जेमिनी 2.5 का उपयोग करके अपनी राइडिंग स्टाइल, शरीर के प्रकार और बजट के अनुसार मशीन चुनें。",
     riderStatsUsed: "राइडर आँकड़े",
-    calculationMethod: "यह कैसे काम करता है"
+    calculationMethod: "यह कैसे काम करता है",
+    newLaunch: "नई लॉन्च",
   },
   [IndianLanguage.TELUGU]: {
     ...english,
@@ -136,7 +138,8 @@ export const translations: Record<IndianLanguage, typeof english> = {
     basedOnStats: "మీ ఎత్తు మరియు బరువు ఆధారంగా",
     heroSubtitle: "కేవలం బైక్ కొనకండి. మీ బాడీ టైప్ మరియు బడ్జెట్‌కు సరిపోయే మెషీన్‌ను ఎంచుకోండి.",
     riderStatsUsed: "రైడర్ గణాంకాలు",
-    calculationMethod: "ఇది ఎలా పనిచేస్తుంది"
+    calculationMethod: "ఇది ఎలా పనిచేస్తుంది",
+    newLaunch: "కొత్త లాంచ్",
   },
   [IndianLanguage.TAMIL]: {
     ...english,
@@ -151,7 +154,8 @@ export const translations: Record<IndianLanguage, typeof english> = {
     riderFitAnalysis: "ரைடர் பொருத்தம் பகுப்பாய்வு",
     basedOnStats: "உங்கள் உயரம் மற்றும் எடையின் அடிப்படையில்",
     riderStatsUsed: "ரைடர் புள்ளிவிவரங்கள்",
-    calculationMethod: "எப்படி கணக்கிடப்பட்டது"
+    calculationMethod: "எப்படி கணக்கிடப்பட்டது",
+    newLaunch: "புதிய அறிமுகம்",
   },
   [IndianLanguage.KANNADA]: {
     ...english,
@@ -166,7 +170,8 @@ export const translations: Record<IndianLanguage, typeof english> = {
     riderFitAnalysis: "ಸವಾರಿ ಫಿಟ್ ವಿಶ್ಲೇಷಣೆ",
     basedOnStats: "ನಿಮ್ಮ ಎತ್ತರ ಮತ್ತು ತೂಕದ ಆಧಾರದ ಮೇಲೆ",
     riderStatsUsed: "ಸವಾರರ ಅಂಕಿಅಂಶ",
-    calculationMethod: "ಇದು ಹೇಗೆ ಕೆಲಸ ಮಾಡುತ್ತದೆ"
+    calculationMethod: "ಇದು ಹೇಗೆ ಕೆಲಸ ಮಾಡುತ್ತದೆ",
+    newLaunch: "ಹೊಸ ಬಿಡುಗಡೆ",
   },
   [IndianLanguage.MALAYALAM]: {
     ...english,
@@ -181,7 +186,8 @@ export const translations: Record<IndianLanguage, typeof english> = {
     riderFitAnalysis: "റൈഡർ ഫിറ്റ് വിശകലനം",
     basedOnStats: "നിങ്ങളുടെ ഉയരവും ഭാരവും അടിസ്ഥാനമാക്കി",
     riderStatsUsed: "റൈഡർ സ്ഥിതിവിവരക്കണക്കുകൾ",
-    calculationMethod: "ഇത് എങ്ങനെ പ്രവർത്തിക്കുന്നു"
+    calculationMethod: "ഇത് എങ്ങനെ പ്രവർത്തിക്കുന്നു",
+    newLaunch: "പുതിയ ലോഞ്ച്",
   },
   [IndianLanguage.BENGALI]: {
     ...english,
@@ -196,7 +202,8 @@ export const translations: Record<IndianLanguage, typeof english> = {
     riderFitAnalysis: "রাইডার ফিট বিশ্লেষণ",
     basedOnStats: "আপনার উচ্চতা এবং ওজনের উপর ভিত্তি করে",
     riderStatsUsed: "রাইডার স্ট্যাটস",
-    calculationMethod: "কিভাবে এটা কাজ করে"
+    calculationMethod: "কিভাবে এটা কাজ করে",
+    newLaunch: "নতুন লঞ্চ",
   },
   [IndianLanguage.MARATHI]: {
     ...english,
@@ -211,7 +218,8 @@ export const translations: Record<IndianLanguage, typeof english> = {
     riderFitAnalysis: "रायडर फिट विश्लेषण",
     basedOnStats: "तुमच्या उंची आणि वजनावर आधारित",
     riderStatsUsed: "रायडर आकडेवारी",
-    calculationMethod: "हे कसे कार्य करते"
+    calculationMethod: "हे कसे कार्य करते",
+    newLaunch: "नवीन लॉन्च",
   },
   [IndianLanguage.GUJARATI]: {
     ...english,
@@ -226,7 +234,8 @@ export const translations: Record<IndianLanguage, typeof english> = {
     riderFitAnalysis: "રાઇડર ફિટ વિશ્લેષણ",
     basedOnStats: "તમારી ઊંચાઈ અને વજનના આધારે",
     riderStatsUsed: "રાઇડર આંકડા",
-    calculationMethod: "તે કેવી રીતે કામ કરે છે"
+    calculationMethod: "તે કેવી રીતે કામ કરે છે",
+    newLaunch: "નવું લોન્ચ",
   },
   [IndianLanguage.PUNJABI]: {
     ...english,
@@ -241,7 +250,8 @@ export const translations: Record<IndianLanguage, typeof english> = {
     riderFitAnalysis: "ਰਾਈਡਰ ਫਿੱਟ ਵਿਸ਼ਲੇਸ਼ਣ",
     basedOnStats: "ਤੁਹਾਡੀ ਉਚਾਈ ਅਤੇ ਭਾਰ ਦੇ ਅਧਾਰ ਤੇ",
     riderStatsUsed: "ਰਾਈਡਰ ਦੇ ਅੰਕੜੇ",
-    calculationMethod: "ਇਹ ਕਿਵੇਂ ਕੰਮ ਕਰਦਾ ਹੈ"
+    calculationMethod: "ਇਹ ਕਿਵੇਂ ਕੰਮ ਕਰਦਾ ਹੈ",
+    newLaunch: "ਨਵਾਂ ਲਾਂਚ",
   },
   [IndianLanguage.ODIA]: {
     ...english,
@@ -256,7 +266,8 @@ export const translations: Record<IndianLanguage, typeof english> = {
     riderFitAnalysis: "ରାଇଡର୍ ଫିଟ୍ ବିଶ୍ଳେଷଣ",
     basedOnStats: "ଆପଣଙ୍କର ଉଚ୍ଚତା ଏବଂ ଓଜନ ଉପରେ ଆଧାର କରି",
     riderStatsUsed: "ରାଇଡର୍ ପରିସଂଖ୍ୟାନ",
-    calculationMethod: "ଏହା କିପରି କାମ କରେ"
+    calculationMethod: "ଏହା କିପରି କାମ କରେ",
+    newLaunch: "ନୂଆ ଲଞ୍ଚ୍",
   },
   [IndianLanguage.ASSAMESE]: {
     ...english,
@@ -271,7 +282,8 @@ export const translations: Record<IndianLanguage, typeof english> = {
     riderFitAnalysis: "ৰাইডাৰ ফিট বিশ্লেষণ",
     basedOnStats: "আপোনাৰ উচ্চতা আৰু ওজনৰ ওপৰত ভিত্তি কৰি",
     riderStatsUsed: "ৰাইডাৰ পৰিসংখ্যা",
-    calculationMethod: "ই কেনেকৈ কাম কৰে"
+    calculationMethod: "ই কেনেকৈ কাম কৰে",
+    newLaunch: "নতুন লঞ্চ",
   },
   [IndianLanguage.URDU]: {
     ...english,
@@ -286,7 +298,8 @@ export const translations: Record<IndianLanguage, typeof english> = {
     riderFitAnalysis: "رائڈر فٹ تجزیہ",
     basedOnStats: "آپ کی اونچائی اور وزن کی بنیاد پر",
     riderStatsUsed: "رائڈر کے اعدادوشمار",
-    calculationMethod: "یہ کیسے کام کرتا ہے"
+    calculationMethod: "یہ کیسے کام کرتا ہے",
+    newLaunch: "نئی لانچ",
   },
   [IndianLanguage.KONKANI]: {
     ...english,
@@ -301,7 +314,8 @@ export const translations: Record<IndianLanguage, typeof english> = {
     riderFitAnalysis: "रायडर फिट विश्लेषण",
     basedOnStats: "तुमची उंचाय आनी वजनाचेर आदारिल्लें",
     riderStatsUsed: "रायडर आकडेवारी",
-    calculationMethod: "हें कशें काम करता"
+    calculationMethod: "हें कशें काम करता",
+    newLaunch: "नवें लाँच",
   },
   [IndianLanguage.MANIPURI]: {
     ...english,
@@ -316,7 +330,8 @@ export const translations: Record<IndianLanguage, typeof english> = {
     riderFitAnalysis: "রাইদর ফিট এনালাইসিস",
     basedOnStats: "নহাক্কী পামজবা অমসুং অরুম্বা য়েংলগা",
     riderStatsUsed: "রাইদরগী দাতা",
-    calculationMethod: "মসি করম্না তৌবগে"
+    calculationMethod: "মসি করম্না তৌবগে",
+    newLaunch: "অনৌবা লঞ্চ",
   },
   [IndianLanguage.KASHMIRI]: {
     ...english,
@@ -331,7 +346,8 @@ export const translations: Record<IndianLanguage, typeof english> = {
     riderFitAnalysis: "رائڈر فٹ تجزیہ",
     basedOnStats: "تہنزی تھزر تہ وزنک بنیادس پیٹھ",
     riderStatsUsed: "رائڈر شماریات",
-    calculationMethod: "یہِ چھُ کتھِ کَنِ کٲم کران"
+    calculationMethod: "یہِ چھُ کتھِ کَنِ کٲم کران",
+    newLaunch: "نو لانچ",
   },
   [IndianLanguage.NEPALI]: {
     ...english,
@@ -346,7 +362,8 @@ export const translations: Record<IndianLanguage, typeof english> = {
     riderFitAnalysis: "राइडर फिट विश्लेषण",
     basedOnStats: "तपाईंको उचाइ र तौलको आधारमा",
     riderStatsUsed: "राइडर तथ्याङ्क",
-    calculationMethod: "यसले कसरी काम गर्छ"
+    calculationMethod: "यसले कसरी काम गर्छ",
+    newLaunch: "नयाँ लन्च",
   },
   [IndianLanguage.SANSKRIT]: {
     ...english,
@@ -361,7 +378,8 @@ export const translations: Record<IndianLanguage, typeof english> = {
     riderFitAnalysis: "चालक-औचित्य-विश्लेषणम्",
     basedOnStats: "भवतः उन्नति-भारयोः आधारः",
     riderStatsUsed: "चालक-तथ्याङ्काः",
-    calculationMethod: "कथं कार्यं करोति"
+    calculationMethod: "कथं कार्यं करोति",
+    newLaunch: "नवीनं विमोचनम्",
   },
   [IndianLanguage.SINDHI]: {
     ...english,
@@ -376,7 +394,8 @@ export const translations: Record<IndianLanguage, typeof english> = {
     riderFitAnalysis: "رائيڊر فٽ تجزيو",
     basedOnStats: "توهان جي قد ۽ وزن جي بنياد تي",
     riderStatsUsed: "رائيڊر جا انگ اکر",
-    calculationMethod: "اهو ڪيئن ڪم ڪري ٿو"
+    calculationMethod: "اهو ڪيئن ڪم ڪري ٿو",
+    newLaunch: "نئون لانچ",
   },
   [IndianLanguage.DOGRI]: {
     ...english,
@@ -391,7 +410,8 @@ export const translations: Record<IndianLanguage, typeof english> = {
     riderFitAnalysis: "राइडर फिट परख",
     basedOnStats: "तुंदी उंचाई ते भार दे आधार उप्पर",
     riderStatsUsed: "राइडर दे आंकड़े",
-    calculationMethod: "एह किय्यां कम्म करदा ऐ"
+    calculationMethod: "एह किय्यां कम्म करदा ऐ",
+    newLaunch: "नवां लांच",
   },
   [IndianLanguage.MAITHILI]: {
     ...english,
@@ -406,7 +426,8 @@ export const translations: Record<IndianLanguage, typeof english> = {
     riderFitAnalysis: "राइडर फिट विश्लेषण",
     basedOnStats: "अहाँक ऊँचाई आ वजन क आधार पर",
     riderStatsUsed: "राइडर क आँकड़ा",
-    calculationMethod: "ई कोना काज करैत अछि"
+    calculationMethod: "ई कोना काज करैत अछि",
+    newLaunch: "नव लॉन्च",
   },
   [IndianLanguage.BODO]: {
     ...english,
@@ -421,7 +442,8 @@ export const translations: Record<IndianLanguage, typeof english> = {
     riderFitAnalysis: "राइडर फिट बिजिरनाय",
     basedOnStats: "नोंथांनि गोजौ आरो लेरेमनि सायाव",
     riderStatsUsed: "राइडरनी तथ्थ",
-    calculationMethod: "बेयो माबोरै खामानि मावो"
+    calculationMethod: "बेयो माबोरै खामानि मावो",
+    newLaunch: "गोदान लन्च",
   },
   [IndianLanguage.SANTALI]: {
     ...english,
@@ -436,7 +458,8 @@ export const translations: Record<IndianLanguage, typeof english> = {
     riderFitAnalysis: "ᱨᱟᱭᱰᱟᱨ ᱯᱷᱤᱴ ᱵᱤᱥᱞᱮᱥᱚᱱ",
     basedOnStats: "ᱟᱢᱟᱜ ᱩᱥᱩᱞ ᱟᱨ ᱦᱟᱢᱟᱞ ᱪᱮᱛᱟᱱ ᱨᱮ",
     riderStatsUsed: "ᱨᱟᱭᱰᱟᱨ ᱛᱚᱛᱷᱭᱚ",
-    calculationMethod: "ᱱᱚᱣᱟ ᱪᱮᱫ ᱞᱮᱠᱟ ᱠᱟᱹᱢᱤᱭᱟ"
+    calculationMethod: "ᱱᱚᱣᱟ ᱪᱮᱫ ᱞᱮᱠᱟ ᱠᱟᱹᱢᱤᱭᱟ",
+    newLaunch: "ᱱᱟᱣᱟ ᱞᱚᱱᱪ",
   }
 };
 
